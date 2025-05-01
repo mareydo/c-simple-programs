@@ -1,0 +1,14 @@
+Matrix calculator
+
+Create an application implementing a matrix calculator.
+
+The calculator must implement:
+
+    work with matrices of different sizes
+    basic operations: addition, subtraction, multiplication, transpose
+    merging (3x3 merged with 3x3 => 6x3 matrix) and trimming (e.g. only the left half of a 6x3 => left 3x3 matrix)
+    for quartic matrices, additionally inversion calculation
+    efficient memory representation (for sparse matrices 2D arrays are not suitable, for dense matrices the opposite is true)
+    functions for calculating the determinant, determining the rank, Gaussian elimination method
+    variables (storing a matrix in a variable, retrieving a matrix from an input, using a variable in a calculation)
+    storing the matrix (in effective representation) in a file and reading it from the file
