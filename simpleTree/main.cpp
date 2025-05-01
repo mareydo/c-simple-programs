@@ -5,16 +5,16 @@ using namespace std;
 //---------------------------------------------------------
 struct CNode
 {
-    CNode* leftChild = nullptr;
-    CNode* rightChild= nullptr;
+    CNode* leftChild;
+    CNode* rightChild;
     int key;
 };
 
 class CTree
 {
     private:
-        CNode* root;
-        bool errorFlag;
+        CNode* root= nullptr;
+        bool errorFlag=false;
         CNode* createNode(int key);
         CNode* insertNode(CNode*, int);
         CNode* deleteNode(CNode*, int);
