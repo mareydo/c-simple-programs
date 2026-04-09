@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <cstdint>
 
 class I2C
 {
@@ -6,7 +6,7 @@ class I2C
     protected:
         uint8_t address;
 
-        int writeByte(const uint8_t address, const uint8_t data);
-        int readByte(const uint8_t address, uint8_t& data);
+        int writeByte(const uint8_t command);
+        int readByte(const uint8_t command, uint8_t& data);
     public:
-}
+};

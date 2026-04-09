@@ -1,4 +1,7 @@
-class MP3
+#include <cstdint>
+#include "glass-blocks/serial/serial.hpp"
+
+class MP3 : public Serial
 {
     private:
         uint8_t id;
@@ -9,4 +12,4 @@ class MP3
         bool volumeUp();
         bool volumeDown();
         uint8_t getVolume();
-}
+};
