@@ -2,21 +2,21 @@
 #include <string>
 #include <iostream>
 #include "glass-blocks/i2c/i2c.hpp"
+#include "glass-blocks/oled/SSD1306_commands.hpp"
 
-#define WHITE_COLOR 0
-#define BLACK_COLOR 1
-
-class OLED : public I2C
+class OLED
 {
 private:
-    uint8_t height;
-    uint8_t width;
-    uint8_t* pixelBuffer;
+    I2C         i2c;
+
+    uint8_t     height;
+    uint8_t     width;
+    uint8_t*    pixelBuffer;
 
     bool SSD1306_writeCommand(const uint8_t command);
     bool validateCoords(const uint8_t x,const  uint8_t y) const;
 public:
-    OLED(const uint8_t width, const uint8_t height, const uint8_t address);
+    OLED(const uint8_t width, const uint8_t height, const uint8_t address, const uint8_t adapterNr);
     ~OLED();
     bool init();
     bool render();

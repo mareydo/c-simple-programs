@@ -18,3 +18,6 @@ add_executable(glass-blocks
 target_include_directories(glass-blocks PRIVATE
     ${PROJECT_SOURCE_DIR}/include
 )
+
+
+target_link_libraries(glass-blocks i2c)
