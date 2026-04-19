@@ -187,9 +187,9 @@ bool OLED::drawLine(const uint8_t fromX, const uint8_t fromY, const uint8_t toX,
 
     if(fromX == toX)
     {
-        uint8_t ya = fromY < toY ? fromY : toY;
-        uint8_t yb = fromY > toY ? fromY : toY;
-        for (uint8_t y = ya; y <= yb; ++y) 
+        y1 = fromY < toY ? fromY : toY;
+        y2 = fromY > toY ? fromY : toY;
+        for (uint8_t y = y1; y <= y2; ++y) 
         {
             if (!putPixel(fromX, y, color)) return false;
         }
