@@ -12,6 +12,7 @@ add_executable(glass-blocks
     src/i2c/i2c.cpp
     src/mp3/mp3.cpp
     src/oled/oled.cpp
+    src/oled/font.cpp
     src/serial/serial.cpp
 )
 

@@ -1,6 +1,10 @@
+#include <cmath>
 #include "glass-blocks/oled/oled.hpp"
 
-OLED::OLED(const uint8_t width, const uint8_t height, const uint8_t address, const uint8_t adapterNr) : i2c(address, adapterNr)
+OLED::OLED(const uint8_t width, 
+    const uint8_t height, 
+    const uint8_t address, 
+    const uint8_t adapterNr) : i2c(address, adapterNr), font()
 {
     this->width = width;
     this->height = height;
@@ -152,11 +156,93 @@ bool OLED::putPixel(const uint8_t x,const  uint8_t y,const uint8_t color)
     return true;
 }
 
-bool OLED::drawLine(const uint8_t fromX, const uint8_t fromY, const uint8_t toX, const uint8_t toY)
+bool OLED::putColumn(const uint8_t x, const uint8_t y, const uint8_t data, const uint8_t color)
 {
+    if(!validateCoords(x,y)) return false;
+
+    switch (color)
+    {
+        case SSD1306_WHITE:
+            pixelBuffer[x + (y / 8) * width] |= data;
+            break;
+        case SSD1306_BLACK:
+            pixelBuffer[x + (y / 8) * width] &= ~(data);
+            break;
+        case SSD1306_INVERSE:
+            pixelBuffer[x + (y / 8) * width] ^= data;
+            break;
+        default:
+            return false;
+    }
     return true;
 }
-bool OLED::putString(const uint8_t row,const  uint8_t column, const std::string text)
+
+bool OLED::drawLine(const uint8_t fromX, const uint8_t fromY, const uint8_t toX, const uint8_t toY, const uint8_t color)
 {
+    if(!validateCoords(fromX,fromY)) return false;
+    if(!validateCoords(toX,toY)) return false;
+
+    uint8_t x1,x2,y1,y2,dx,dy;
+    uint8_t x,y;
+
+    if(fromX == toX)
+    {
+        uint8_t ya = fromY < toY ? fromY : toY;
+        uint8_t yb = fromY > toY ? fromY : toY;
+        for (uint8_t y = ya; y <= yb; ++y) 
+        {
+            if (!putPixel(fromX, y, color)) return false;
+        }
+    }
+    else if(fromX > toX)
+    {
+        x2 = fromX;
+        y2 = fromY;
+        x1 = toX;
+        y1 = toY;
+    }
+    else
+    {
+        x2 = toX;
+        y2 = toY;
+        x1 = fromX;
+        y1 = fromY;
+    }
+
+    double m = (double)(y2 - y1)/(double)(x2 - x1);
+
+    for(x = x1; x <= x2; ++x)
+    {
+        y = m * ( x - x1 ) + y1;
+        if(!putPixel(x,y,color)) return false;
+    }
+
+    return true;
+}
+bool OLED::putString(const uint8_t x,const uint8_t y, const std::string text, const uint8_t color)
+{
+    if(!validateCoords(x,y)) return false;
+
+    for(size_t letterIndex = 0; letterIndex < text.length(); ++letterIndex)
+    {
+        const uint8_t* fontData = font.getChar(text[letterIndex]);
+        for(size_t letterColumn = 0; letterColumn < FONT_WIDTH; ++letterColumn)
+        {
+            if(!putColumn((FONT_WIDTH+1)*letterIndex + x + letterColumn, 
+                            y,
+                            *(fontData + letterColumn), 
+                            color))
+            {
+                return false;
+            }
+        }
+        if(!putColumn(FONT_WIDTH+1*letterIndex + x + 8, 
+                            y,
+                            0x00, 
+                            SSD1306_BLACK))
+            {
+                return false;
+            }
+    }
     return true;
 }
