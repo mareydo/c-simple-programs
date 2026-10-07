@@ -19,8 +19,8 @@ OLED::~OLED()
 
 bool OLED::SSD1306_writeCommand(const uint8_t command)
 {
-    uint8_t buffer[2] = {0x00, command};
-    return i2c.writeBytes(buffer, 2);
+    uint16_t buffer = 0x0000 | command;
+    return i2c.write16(buffer);
     
 }
 
@@ -99,7 +99,7 @@ bool OLED::render()
             buffer[j + 1] = pixelBuffer[i + j];
         }
 
-        if (!i2c.writeBytes(buffer, 17))
+        if (!i2c.writeN(buffer, 17))
             return false;
     }
     return true;

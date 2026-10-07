@@ -1,3 +1,6 @@
+#ifndef _SSD1306_COMMANDS_HPP_
+#define _SSD1306_COMMANDS_HPP_
+
 //copied from Adafruit_SSD1306 library
 
 #define SSD1306_BLACK               0   
@@ -38,4 +41,6 @@
 #define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL     0x2A 
 #define SSD1306_DEACTIVATE_SCROLL                       0x2E                   
 #define SSD1306_ACTIVATE_SCROLL                         0x2F                     
-#define SSD1306_SET_VERTICAL_SCROLL_AREA                0xA3            
+#define SSD1306_SET_VERTICAL_SCROLL_AREA                0xA3        
+
+#endif /* _SSD1306_COMMANDS_HPP_ */

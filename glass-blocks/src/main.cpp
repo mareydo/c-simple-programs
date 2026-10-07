@@ -1,11 +1,54 @@
 #include <iostream>
 
 #include "glass-blocks/oled/oled.hpp"
+#include "glass-blocks/camera/camera.hpp"
 
 using namespace std;
 
+#define I2C_ADDRESS_OLED 0x3c
+#define I2C_ADDRESS_CAMERA 0x66
+
 int main(void)
 {
+    std::cout << "Glass Blocks Start" << std::endl;
+    Camera camera(32,24,I2C_ADDRESS_CAMERA,1);
+
+    bool retVal = camera.init();
+    cout << boolalpha <<"Camera init: " << retVal << endl;
+
+
+    Camera::CameraVersion version = camera.readVersion();
+    if(version.major == 0)
+    {
+        cout << "Zero major" << endl;
+    }
+    else
+    {
+        cout << "Major: " << unsigned(version.major) << endl;
+        cout << "Minor: " << unsigned(version.minor) << endl;
+        cout << "Patch: " << unsigned(version.patch) << endl;
+    }
+
+    cout << "Mode: " << camera.getMeasuringMode() << endl;
+
+    retVal = camera.setMeasuringMode(CONT_MEASURING_MODE);
+    cout << boolalpha << "Camera setmode: " << retVal << endl;
+    cout << "Mode: " << camera.getMeasuringMode() << endl;
+
+    retVal = camera.setOutputDataFormat(OUTPUT_DATA_ABSOLUTE);
+    cout << boolalpha << "Output Data format set: " << retVal << endl;
+    cout << "Output data format: " << camera.getOutputDataFormat() << endl;
+
+    //bool readyFlag = camera.isReadyFlag();
+    //cout << boolalpha << "readyFlag: " << readyFlag << endl;
+    /*
+    for(int i = 0; i < 10000; ++i)
+    {
+        camera.update();
+        camera.printBufferCelsius();
+    }
+    */
+    /*
     std::cout << "Glass Blocks Start" << std::endl;
     OLED oled(128,64,0x3c,1);
     bool retVal = oled.init();
@@ -62,5 +105,19 @@ int main(void)
 
     retVal = oled.render();
     cout << boolalpha << "OLED render: " << retVal << endl;
+    */
     return 0;
 }
+
+
+
+
+Channel Breakpoint
+{
+public:
+    void subscribe();
+
+
+
+
+};

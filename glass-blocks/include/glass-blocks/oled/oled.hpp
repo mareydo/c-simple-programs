@@ -1,3 +1,6 @@
+#ifndef _OLED_HPP_
+#define _OLED_HPP_
+
 #include <cstdint>
 #include <string>
 #include <iostream>
@@ -28,3 +31,5 @@ public:
     bool drawLine(const uint8_t fromX, const uint8_t fromY, const uint8_t toX, const uint8_t toY, const uint8_t color);
     bool putString(const uint8_t row,const  uint8_t column, const std::string text, const uint8_t color);
 };
+
+#endif /* _OLED_HPP_ */

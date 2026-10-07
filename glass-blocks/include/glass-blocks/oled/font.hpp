@@ -1,3 +1,6 @@
+#ifndef _FONT_HPP_
+#define _FONT_HPP_
+
 // font copied from
 // https://github.com/BaronWilliams/Vertical-Fonts/blob/master/font7x8.c
 #include <cstdint>
@@ -13,3 +16,5 @@ public:
     Font();
     const uint8_t* getChar(const char c) const;
 };
+
+#endif /* _FONT_HPP_ */
