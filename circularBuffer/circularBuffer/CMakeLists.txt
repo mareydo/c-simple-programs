@@ -2,7 +2,6 @@ add_library(circular_buffer_lib STATIC
     src/circularBuffer.cpp
 )
 
-
 target_include_directories(circular_buffer_lib PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
@@ -18,6 +17,9 @@ target_compile_definitions(circular_buffer_lib PRIVATE
 if(CIRCULAR_BUFFER_LIB_WERROR)
     target_compile_options(circular_buffer_lib PRIVATE -Werror)
 endif()
+
+find_package(Threads REQUIRED)
+target_link_libraries(circular_buffer_lib PRIVATE Threads::Threads)
 
 add_library(circular_buffer_constants INTERFACE)
 target_include_directories(circular_buffer_constants INTERFACE
