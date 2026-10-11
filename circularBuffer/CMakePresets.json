@@ -1,0 +1,90 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "asan",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CIRCULAR_BUFFER_LIB_ASAN": "ON"
+      }
+    },
+    {
+      "name": "tsan",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CIRCULAR_BUFFER_LIB_TSAN": "ON"
+      }
+    },
+    {
+      "name": "coverage",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CIRCULAR_BUFFER_LIB_COVERAGE": "ON"
+      }
+    },
+    {
+      "name": "arm64",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchain-aarch64.cmake"
+      }
+    }
+  ],
+  "buildPresets": [
+    {"name": "debug",    "configurePreset": "debug"},
+    {"name": "release",  "configurePreset": "release"},
+    {"name": "asan",     "configurePreset": "asan"},
+    {"name": "tsan",     "configurePreset": "tsan"},
+    {"name": "coverage", "configurePreset": "coverage"},
+    {"name": "arm64",    "configurePreset": "arm64"}
+  ],
+  "testPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug",
+      "output": {"outputOnFailure": true}
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan",
+      "output": {"outputOnFailure": true}
+    },
+    {
+      "name": "tsan",
+      "configurePreset": "tsan",
+      "output": {"outputOnFailure": true}
+    },
+    {
+      "name": "release",
+      "configurePreset": "release",
+      "output": {"outputOnFailure": true}
+    }
+  ]
+}

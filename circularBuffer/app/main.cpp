@@ -1,52 +1,13 @@
 #include <cassert>
 #include <chrono>
-#include <condition_variable>
-#include <cstddef>
+#include <cstring>
 #include <functional>
 #include <iostream>
-#include <mutex>
 #include <thread>
 #include "circularBuffer/circularBuffer.hpp"
 #include "circularBuffer/constants.hpp"
+#include "version.h"
 
-void simpleTest()
-{
-    std::cout << "Simple" << '\n';
-    CircularBuffer cb;
-    for(size_t i = 0; i < 10; ++i)
-    {
-        bool pushRetVal = cb.push(i);
-        assert(pushRetVal);
-    }
-    std::cout << cb;
-
-    bool overflowPush = cb.push(42);
-    assert(overflowPush == false);
-
-}
-
-void simplePushPop()
-{
-
-    std::cout << "PUSH POP" << '\n';
-    CircularBuffer cb;
-    for(size_t i = 0; i < 10; ++i)
-    {
-        bool pushRetVal = cb.push(i);
-        assert(pushRetVal);
-    }
-    assert(cb.size() == 10);
-    std::cout << cb;
-    uint8_t val = 0;
-    for(size_t i = 0; i < 10; ++i)
-    {
-        val = -1;
-        bool popRetVal = cb.pop(&val);
-        assert(popRetVal);
-        assert(val == i);
-    }
-    std::cout << cb;
-}
 
 void producentRun(CircularBuffer &cb)
 {
@@ -66,7 +27,8 @@ void producentRun(CircularBuffer &cb)
 
 void consumentRun(CircularBuffer &cb)
 {
-    while(true)
+    // TODO mabe jthread or other better mechanism to break the loop
+    do
     {
         uint8_t readVal = 0;
         if(!cb.pop(&readVal))
@@ -78,16 +40,22 @@ void consumentRun(CircularBuffer &cb)
             std::cout << "Consument poped " << unsigned(readVal) << '\n';
         }
         //std::this_thread::sleep_for(std::chrono::seconds(3));
+        if(cb.size()==0) { break; }
     }
+    while(true);
 
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
-    std::cout << "Buffer size: " << CircularBufferConstants::BUFFER_SIZE << '\n';
+    if (argc > 1 && std::strcmp(argv[1], "--version") == 0) {
+        std::cout << "CircularBuffer "
+                    <<  CB_VERSION_STRING
+                    << '\n';
+        return 0;
+    }
 
-    //simpleTest();
-    //simplePushPop();
+    std::cout << "Buffer size: " << CircularBufferConstants::BUFFER_SIZE << '\n';
 
     CircularBuffer cb;
     std::thread producent = std::thread(producentRun, std::ref(cb));
@@ -95,7 +63,6 @@ int main(void)
 
     producent.join();
     consument.join();
-
 
     return 0;
 }
