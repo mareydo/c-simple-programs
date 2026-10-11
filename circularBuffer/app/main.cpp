@@ -1,8 +1,8 @@
 #include <cassert>
 #include <cstddef>
 #include <iostream>
-#include "circularBuffer.hpp"
-
+#include "circularBuffer/circularBuffer.hpp"
+#include "circularBuffer/constants.hpp"
 
 void simpleTest()
 {
@@ -45,6 +45,8 @@ void simplePushPop()
 
 int main(void)
 {
+    std::cout << "Buffer size: " << CircularBufferConstants::BUFFER_SIZE << '\n';
+
     simpleTest();
     simplePushPop();
 

@@ -3,12 +3,13 @@
 #include <cstdint>
 #include <ostream>
 
+#include "constants.hpp"
+
 
 class CircularBuffer
 {
-    #define BUFFER_SIZE 10
     private:
-        uint8_t buffer[BUFFER_SIZE];
+        uint8_t buffer[CircularBufferConstants::BUFFER_SIZE];
         std::size_t head;
         std::size_t tail;
         std::size_t bufferCounter;

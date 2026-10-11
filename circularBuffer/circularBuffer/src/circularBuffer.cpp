@@ -1,5 +1,7 @@
-#include "circularBuffer.hpp"
+#include "circularBuffer/circularBuffer.hpp"
+
 #include <cstddef>
+#include <iostream>
 
 CircularBuffer::CircularBuffer(): head(0), tail(0), bufferCounter(0)
 {}
@@ -7,7 +9,7 @@ CircularBuffer::CircularBuffer(): head(0), tail(0), bufferCounter(0)
 bool CircularBuffer::isFull()
 {
     //This waste one element return ((head+1)%BUFFER_SIZE) == tail;
-    return bufferCounter == BUFFER_SIZE;
+    return bufferCounter == CircularBufferConstants::BUFFER_SIZE;
 }
 bool CircularBuffer::isEmpty()
 {
@@ -18,7 +20,7 @@ bool CircularBuffer::isEmpty()
 void CircularBuffer::moduloIterate(std::size_t& ptr)
 {
     ++ptr;
-    ptr %= BUFFER_SIZE;
+    ptr %= CircularBufferConstants::BUFFER_SIZE;
 }
 
 bool CircularBuffer::Push(const uint8_t val)
@@ -66,11 +68,11 @@ size_t CircularBuffer::size()
 
 std::ostream& operator<<(std::ostream &os,CircularBuffer &buf)
 {
-    os << "Available: " << BUFFER_SIZE << '\n';
+    os << "Available: " << CircularBufferConstants::BUFFER_SIZE << '\n';
     //size_t realSize = (buf.head >= buf.tail) ? buf.head-buf.tail : BUFFER_SIZE-buf.tail + buf.head;
     os << "Used: " << unsigned(buf.bufferCounter) << '\n';
     os << "IsFull: " << buf.isFull() << " IsEmpty: " << buf.isEmpty() << '\n';
-    for(size_t i = 0; i < BUFFER_SIZE; ++i)
+    for(size_t i = 0; i < CircularBufferConstants::BUFFER_SIZE; ++i)
     {
         os << unsigned(buf.buffer[i]);
 
@@ -83,7 +85,7 @@ std::ostream& operator<<(std::ostream &os,CircularBuffer &buf)
             os << 'T';
         }
 
-        if (i+1 != BUFFER_SIZE)
+        if (i+1 != CircularBufferConstants::BUFFER_SIZE)
         {
             os << ',';
         }
